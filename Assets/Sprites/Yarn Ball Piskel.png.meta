@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bec0c7e2696c16640b7a98e39726c25b
+guid: c6edc7c528f83c2418b833c2e6375f5f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CatSpriteSheet_0
+      name: Yarn Ball Piskel_0
       rect:
         serializedVersion: 2
         x: 0
@@ -133,56 +133,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddcdfcb6eb0a19849bc42a34537ddca4
-      internalID: 141863119
+      spriteID: c84fe26a659da044ba046d9ab4650876
+      internalID: 1817732766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CatSpriteSheet_1
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcee6b630f036af44b5341f167b1e63f
-      internalID: 601717835
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatSpriteSheet_2
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0b53702ca500029479db9a06519aa08e
-      internalID: -156791260
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatSpriteSheet_3
+      name: Yarn Ball Piskel_1
       rect:
         serializedVersion: 2
         x: 0
@@ -196,29 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d629f4f184719c94f9371f24bd4302db
-      internalID: 134535921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatSpriteSheet_4
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94a2c6865e2dbb643a33fa08dc6a930e
-      internalID: -804913702
+      spriteID: f02df1740840bd241b04b97ad092e9ce
+      internalID: 1674823635
       vertices: []
       indices: 
       edges: []
@@ -234,11 +171,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CatSpriteSheet_0: 141863119
-      CatSpriteSheet_1: 601717835
-      CatSpriteSheet_2: -156791260
-      CatSpriteSheet_3: 134535921
-      CatSpriteSheet_4: -804913702
+      Yarn Ball Piskel_0: 1817732766
+      Yarn Ball Piskel_1: 1674823635
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

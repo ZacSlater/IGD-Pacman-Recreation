@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bec0c7e2696c16640b7a98e39726c25b
+guid: 56b87c54bca6df94f8bc956031141845
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,49 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CatSpriteSheet_0
+      name: Wall Piskel_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97cfd0f004d4bf7418fa04cb66e5f8d0
+      internalID: -699784122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall Piskel_1
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31e473755a1158648ad6b5921f7baa73
+      internalID: 48577259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall Piskel_2
       rect:
         serializedVersion: 2
         x: 0
@@ -133,14 +175,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddcdfcb6eb0a19849bc42a34537ddca4
-      internalID: 141863119
+      spriteID: dedcff010e24888469fe6e6c2a659610
+      internalID: 1067388997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CatSpriteSheet_1
+      name: Wall Piskel_3
       rect:
         serializedVersion: 2
         x: 512
@@ -154,35 +196,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dcee6b630f036af44b5341f167b1e63f
-      internalID: 601717835
+      spriteID: aafde0075b4112d4c92378a8539f12c0
+      internalID: -1473675906
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CatSpriteSheet_2
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0b53702ca500029479db9a06519aa08e
-      internalID: -156791260
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatSpriteSheet_3
+      name: Wall Piskel_4
       rect:
         serializedVersion: 2
         x: 0
@@ -196,29 +217,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d629f4f184719c94f9371f24bd4302db
-      internalID: 134535921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatSpriteSheet_4
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94a2c6865e2dbb643a33fa08dc6a930e
-      internalID: -804913702
+      spriteID: 5260ee2e3c381e948aa960053ab84c41
+      internalID: 1884035273
       vertices: []
       indices: 
       edges: []
@@ -234,11 +234,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CatSpriteSheet_0: 141863119
-      CatSpriteSheet_1: 601717835
-      CatSpriteSheet_2: -156791260
-      CatSpriteSheet_3: 134535921
-      CatSpriteSheet_4: -804913702
+      Wall Piskel_0: -699784122
+      Wall Piskel_1: 48577259
+      Wall Piskel_2: 1067388997
+      Wall Piskel_3: -1473675906
+      Wall Piskel_4: 1884035273
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
