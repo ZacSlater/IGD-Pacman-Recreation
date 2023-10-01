@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c6edc7c528f83c2418b833c2e6375f5f
+guid: 2820af1cc167e89409fff1948cf48baa
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,43 +119,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Yarn Ball Piskel_0
+      name: Yarn Ball Piskel 1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 512
-        height: 512
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c84fe26a659da044ba046d9ab4650876
-      internalID: 1817732766
+      spriteID: 29310474064e6ff4b881ada72c639c3d
+      internalID: 52185911
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Yarn Ball Piskel_1
+      name: Yarn Ball Piskel 1_1
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f02df1740840bd241b04b97ad092e9ce
-      internalID: 1674823635
+      spriteID: ef40ff45d6fc03543a5c830affe01345
+      internalID: -1847896381
       vertices: []
       indices: 
       edges: []
@@ -171,8 +171,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Yarn Ball Piskel_0: 1817732766
-      Yarn Ball Piskel_1: 1674823635
+      Yarn Ball Piskel 1_0: 52185911
+      Yarn Ball Piskel 1_1: -1847896381
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
