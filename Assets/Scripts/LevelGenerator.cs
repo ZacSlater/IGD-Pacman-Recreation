@@ -9,6 +9,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] sprites;
     int rowMax;
     int colMax;
+    int[] walls = { 1, 2, 3, 4, 7 };
     int[,] levelMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
@@ -75,34 +76,115 @@ public class LevelGenerator : MonoBehaviour
     {
         // if wall has a piece (not 5,6) next to it, horizontal
         // if wall has a piece (not 5,6) above and below it, vertical
+        int horVal = 0;
+        int vertVal = 0;
 
-        if (!(col == 0 || col == colMax))
+        if (!(col == 0 || col == colMax || row == 0 || row == rowMax))
         {
-            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0 || levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0)) // is not a piece horizontally is a pellet
+            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
-                sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                return;
+                horVal++;
             }
-        }
 
-        if (col == 0) // if on the left edge with an adjacent piece
-        { 
             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
             {
-                sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                return;
+                horVal++;
+            }
+
+            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0)) // is not a piece horizontally is a pellet
+            {
+                vertVal++;
+            }
+
+            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+            {
+                vertVal++;
+            }
+
+        } else if (col == 0) // if on the left edge with an adjacent piece
+        { 
+                if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                {
+                    horVal++;
+                }
+
+                if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0)) // is not a piece horizontally is a pellet
+                {
+                    vertVal++;
+                }
+
+                if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                {
+                    vertVal++;
+                }
+            
+            /*Debug.Log("------");
+            Debug.Log("above val: " + levelMap[row - 1, col]);
+            Debug.Log(!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0));
+            Debug.Log("horVal: " + horVal);
+            Debug.Log("vertVal: " + vertVal);
+            Debug.Log("------");*/
+        } else if (col == colMax) // if on the right edge with an adjacent piece
+        {
+            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
+            {
+                horVal++;
+            }
+
+            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0)) // is not a piece horizontally is a pellet
+            {
+                vertVal++;
+            }
+
+            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+            {
+                vertVal++;
+            }
+        } else if (row == 0) // if on the right edge with an adjacent piece
+        {
+            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
+            {
+                horVal++;
+            }
+
+            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+            {
+                horVal++;
+            }
+
+            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+            {
+                vertVal++;
+            }
+        } else if (row == rowMax) // if on the right edge with an adjacent piece
+        {
+            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
+            {
+                horVal++;
+            }
+
+            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+            {
+                horVal++;
+            }
+
+            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0)) // is not a piece horizontally is a pellet
+            {
+                vertVal++;
             }
         }
 
-        if (col == colMax) // if on the right edge with an adjacent piece
+        if (horVal > vertVal)
         {
-            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+            sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (horVal == vertVal)
+        {
+            if (col == 0 || col == colMax)
             {
                 sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                return;
             }
         }
-
 
     }
 
