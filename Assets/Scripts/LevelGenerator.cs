@@ -14,22 +14,41 @@ public class LevelGenerator : MonoBehaviour
     public GameObject lvlParent;
     int[,] levelMap =
     {
-        {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
-        {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
-        {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
-        {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
-        {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
-        {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
-        {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
-        {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
-        {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
-        {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
-        {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
+        {1,2,2,2,2,2,1,0,0,0,0,1,2,2,2,2,2},
+        {2,5,5,5,5,5,1,2,2,2,2,1,5,5,5,5,5},
+        {2,5,3,4,4,3,5,5,5,5,5,5,3,7,3,5,5},
+        {2,6,4,0,0,4,5,3,4,4,3,5,4,7,7,5,5},
+        {2,5,3,4,4,3,5,3,4,4,3,5,3,7,3,5,5},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5},
+        {7,3,6,3,4,3,5,3,3,5,3,4,4,4,4,4,4},
+        {7,3,6,3,4,3,5,4,4,5,3,4,4,3,0,0,0},
+        {2,5,5,5,5,5,5,4,4,5,5,5,5,4,0,0,0},
+        {1,2,2,2,2,1,5,4,3,4,4,3,0,4,0,0,0},
+        {0,0,0,0,0,2,5,4,3,4,4,3,0,3,4,4,4},
+        {0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,0,3,4,4,4,4,0},
+        {0,0,0,0,0,2,5,4,4,0,0,4,0,0,0,0,0},
+        {0,1,2,2,2,1,5,4,4,0,0,4,0,0,0,0,0},
+        {0,2,0,0,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,2,0,0,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,2,0,0,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,1,1,0,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,0,1,1,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,0,0,2,0,0,5,4,4,0,0,4,0,0,0,0,0},
+        {0,0,0,1,2,1,5,4,4,0,0,4,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,0,4,0,0,0,0,0},
+        {2,2,2,2,2,1,5,3,3,0,3,3,0,0,0,0,0},
+        {0,0,0,0,0,0,5,0,0,0,4,0,0,0,0,0,0},
     };
+    /*int[,] levelMap =
+    {
+       {1,2,7,1,0},
+       {2,5,1,1,6},
+       {2,5,6,5,5},
+       {7,4,4,3,0},
+       {1,2,2,1,6}
+    };/*
+
     /* 
      0- empty
      1- outside corner
@@ -59,7 +78,7 @@ public class LevelGenerator : MonoBehaviour
             for (int col = 0; col <= colMax; col++)
             {
                 int spriteNum = levelMap[row, col];
-                level[row, col] = Instantiate(sprites[spriteNum], new Vector3(transform.position.x + col * 30, transform.position.y - row * 30, transform.position.z), transform.rotation, lvlParent.transform);
+                level[row, col] = Instantiate(sprites[spriteNum], new Vector3(col * 30 - 30 * colMax, rowMax * 30 - row * 30, 0), transform.rotation, lvlParent.transform);
 
                 // rotation
 
@@ -106,7 +125,7 @@ public class LevelGenerator : MonoBehaviour
                 vertVal++;
             }
 
-        } else if (col == 0) // if on the left edge with an adjacent piece
+        } else if (col == 0 && !(row == 0 || row == rowMax)) // if on the left edge with an adjacent piece
         {
             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
             {
@@ -129,7 +148,7 @@ public class LevelGenerator : MonoBehaviour
             Debug.Log("horVal: " + horVal);
             Debug.Log("vertVal: " + vertVal);
             Debug.Log("------");*/
-        } else if (col == colMax) // if on the right edge with an adjacent piece
+        } else if (col == colMax && !(row == 0 || row == rowMax)) // if on the right edge with an adjacent piece
         {
             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
@@ -145,7 +164,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 vertVal++;
             }
-        } else if (row == 0) // if on the right edge with an adjacent piece
+        } else if (row == 0 && !(col == 0 || col == colMax)) // if on the right edge with an adjacent piece
         {
             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
@@ -161,7 +180,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 vertVal++;
             }
-        } else if (row == rowMax) // if on the right edge with an adjacent piece
+        } else if (row == rowMax && !(col == 0 || col == colMax)) // if on the right edge with an adjacent piece
         {
             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
@@ -191,9 +210,18 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
+        if (row == 0 && col == colMax)
+        {
+            sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (row == rowMax && col == colMax)
+        {
+            sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+
     }
 
-    public void rotateCorner(GameObject sprite, int row, int col)
+    /*public void rotateCorner(GameObject sprite, int row, int col)
     {
         int hits = 0;
         if (!(row == 0 || col == 0 || row == rowMax || col == colMax))
@@ -202,28 +230,28 @@ public class LevelGenerator : MonoBehaviour
             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0 || levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0)) // is not a piece horizontally is a pellet
             {
                 sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                hits++;
+                hitS = S + 2;
             }
 
             // check SE
             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0 || levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0)) // is not a piece horizontally is a pellet
             {
                 //sprite.transform.rotation = new Quaternion(0, 0, 0, 90);
-                hits++;
+                hitS = S + 2;
             }
 
             // check SW
             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0 || levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
                 sprite.transform.rotation = Quaternion.Euler(0, 0, 270);
-                hits++;
+                hitS = S + 2;
             }
 
             // check NW
             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0 || levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0)) // is not a piece horizontally is a pellet
             {
                 sprite.transform.rotation = Quaternion.Euler(0, 0, 180);
-                hits++;
+                hitS = S + 2;
             }
         }
 
@@ -246,7 +274,7 @@ public class LevelGenerator : MonoBehaviour
     public void rotateTJunction(GameObject sprite, int row, int col)
     {
         return;
-    }
+    }*/
 
     public void checkRotation()
     {
@@ -275,17 +303,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                                N++;
+                                N = N + 2;
                                 if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        N++;
+                                        N = N + 2;
                                     }
                                     else
                                     {
-                                        N--;
+                                        N = N - 2;
                                     }
                                 }
                             }
@@ -294,17 +322,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                S++;
+                                S = S + 2;
                                 if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        S++;
+                                        S = S + 2;
                                     }
                                     else
                                     {
-                                        S--;
+                                        S = S - 2;
                                     }
                                 }
                             }
@@ -313,17 +341,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                W++;
+                                W = W + 2;
                                 if (levelMap[row, col - 1] == 2 || levelMap[row, col + 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        W++;
+                                        W = W + 2;
                                     }
                                     else
                                     {
-                                        W--;
+                                        W = W - 2;
                                     }
                                 }
                             }
@@ -332,17 +360,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                E++;
+                                E = E + 2;
                                 if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        E++;
+                                        E = E + 2;
                                     }
                                     else
                                     {
-                                        E--;
+                                        E = E - 2;
                                     }
                                 }
                             }
@@ -354,17 +382,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                                N++;
+                                N = N + 2;
                                 if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        N++;
+                                        N = N + 2;
                                     }
                                     else
                                     {
-                                        N--;
+                                        N = N - 2;
                                     }
                                 }
                             }
@@ -373,17 +401,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                S++;
+                                S = S + 2;
                                 if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        S++;
+                                        S = S + 2;
                                     }
                                     else
                                     {
-                                        S--;
+                                        S = S - 2;
                                     }
                                 }
                             }
@@ -392,17 +420,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                E++;
+                                E = E + 2;
                                 if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        E++;
+                                        E = E + 2;
                                     }
                                     else
                                     {
-                                        E--;
+                                        E = E - 2;
                                     }
                                 }
                             }
@@ -415,17 +443,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                S++;
+                                S = S + 2;
                                 if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        S++;
+                                        S = S + 2;
                                     }
                                     else
                                     {
-                                        S--;
+                                        S = S - 2;
                                     }
                                 }
                             }
@@ -434,17 +462,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                E++;
+                                E = E + 2;
                                 if (levelMap[row, col + 1] == 2 || levelMap[row, col - 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        E++;
+                                        E = E + 2;
                                     }
                                     else
                                     {
-                                        E--;
+                                        E = E - 2;
                                     }
                                 }
                             }
@@ -453,17 +481,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                W++;
+                                W = W + 2;
                                 if (levelMap[row, col - 1] == 2 || levelMap[row, col + 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        W++;
+                                        W = W + 2;
                                     }
                                     else
                                     {
-                                        W--;
+                                        W = W - 2;
                                     }
                                 }
                             }
@@ -476,17 +504,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                                N++;
+                                N = N + 2;
                                 if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        N++;
+                                        N = N + 2;
                                     }
                                     else
                                     {
-                                        N--;
+                                        N = N - 2;
                                     }
                                 }
                             }
@@ -495,17 +523,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                S++;
+                                S = S + 2;
                                 if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        S++;
+                                        S = S + 2;
                                     }
                                     else
                                     {
-                                        S--;
+                                        S = S - 2;
                                     }
                                 }
                             }
@@ -514,17 +542,17 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                W++;
+                                W = W + 2;
                                 if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        W++;
+                                        W = W + 2;
                                     }
                                     else
                                     {
-                                        W--;
+                                        W = W - 2;
                                     }
                                 }
                             }
@@ -537,55 +565,183 @@ public class LevelGenerator : MonoBehaviour
                             if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
-                                N++;
+                                N = N + 2;
                                 if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
                                 {
                                     // if vertical
                                     if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
                                     {
-                                        N++;
+                                        N = N + 2;
                                     }
                                     else
                                     {
-                                        N--;
+                                        N = N - 2;
                                     }
                                 }
                             }
 
                             // check E
-                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
-                            {
-                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                E++;
-                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
-                                {
-                                    // if horizontal
-                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
-                                    {
-                                        E++;
-                                    }
-                                    else
-                                    {
-                                        E--;
-                                    }
-                                }
-                            }
-
-                            // check W
                             if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
                             {
                                 //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                                W++;
+                                E = E + 2;
                                 if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
                                 {
                                     // if horizontal
                                     if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
                                     {
-                                        W++;
+                                        E = E + 2;
                                     }
                                     else
                                     {
-                                        W--;
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+
+                            // check W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (row == 0 && col == 0)
+                        {
+                            S = S + 2;
+                            E = E + 2;
+                        } 
+                        else if (row == 0 && col == colMax)
+                        {
+                            E++;
+                            // W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+
+                            // S
+                            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                S = S + 2;
+                                if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        S = S + 2;
+                                    }
+                                    else
+                                    {
+                                        S = S - 2;
+                                    }
+                                }
+                            }
+
+                        } 
+                        else if (row == rowMax && col == 0)
+                        {
+                            S++;
+                            // E
+                            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                            {
+                                E = E + 2;
+                                if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        E = E + 2;
+                                    }
+                                    else
+                                    {
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+
+                            // N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
+                                    }
+                                }
+                            }
+                        } 
+                        else if (row == rowMax && col == colMax)
+                        {
+                            S++;
+                            E++;
+                            // W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+
+                            // N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
                                     }
                                 }
                             }
@@ -614,10 +770,6 @@ public class LevelGenerator : MonoBehaviour
                             }
                         }
 
-                        if (row == 0 && col == 0)
-                        {
-                            level[row, col].transform.rotation = Quaternion.Euler(0, 0, 0);
-                        }
                     }
                     catch
                     {
@@ -625,24 +777,499 @@ public class LevelGenerator : MonoBehaviour
                     }
                     
 
-                } else if (levelMap[row, col] == 7) // t-junction
+                } 
+                else if (levelMap[row, col] == 7) // t-junction
                 {
+                    //try
+                    //{
+                        int N = 0;
+                        int S = 0;
+                        int E = 0;
+                        int W = 0;
 
+                        if (!(row == 0 || col == 0 || row == rowMax || col == colMax))
+                        {
+                            // check N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
+                                    }
+                                }
+                            }
+
+                            // check S
+                            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                S = S + 2;
+                                if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        S = S + 2;
+                                    }
+                                    else
+                                    {
+                                        S = S - 2;
+                                    }
+                                }
+                            }
+
+                            // check W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+
+                            // check E
+                            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                E = E + 2;
+                                if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        E = E + 2;
+                                    }
+                                    else
+                                    {
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+                        }
+                        else if (col == 0 && !(row == 0 || row == rowMax))
+                        {
+                            W++;
+                            // N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
+                                    }
+                                }
+                            }
+
+                            // S
+                            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                S = S + 2;
+                                if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        S = S + 2;
+                                    }
+                                    else
+                                    {
+                                        S = S - 2;
+                                    }
+                                }
+                            }
+
+                            // check E
+                            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                E = E + 2;
+                                if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        E = E + 2;
+                                    }
+                                    else
+                                    {
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+                        }
+                        else if (row == 0 && !(col == 0 || col == colMax))
+                        {
+                            N++;
+
+                            // S
+                            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                S = S + 2;
+                                if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        S = S + 2;
+                                    }
+                                    else
+                                    {
+                                        S = S -2;
+                                    }
+                                }
+                            }
+
+                            // check E
+                            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                E = E + 2;
+                                if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        E = E + 2;
+                                    }
+                                    else
+                                    {
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+
+                            // check W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+                        Debug.Log(N + "" + S + "" + E + "" + W);
+                        }
+                        else if (col == colMax && !(row == 0 || row == rowMax))
+                        {
+                            E++;
+
+                            // N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
+                                    }
+                                }
+                            }
+
+                            // S
+                            if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                S = S + 2;
+                                if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        S = S + 2;
+                                    }
+                                    else
+                                    {
+                                        S = S - 2;
+                                    }
+                                }
+                            }
+
+                            // check W
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                W = W + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+                        }
+                        else if (row == rowMax && !(col == 0 || col == colMax))
+                        {
+                            S++;
+
+                            // N
+                            if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                N = N + 2;
+                                if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                                {
+                                    // if vertical
+                                    if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                    {
+                                        N = N + 2;
+                                    }
+                                    else
+                                    {
+                                        N = N - 2;
+                                    }
+                                }
+                            }
+
+                            // check E
+                            if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                E = E + 2;
+                                if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        E = E + 2;
+                                    }
+                                    else
+                                    {
+                                        E = E - 2;
+                                    }
+                                }
+                            }
+
+                            // check W
+                            if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                            {
+                                //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                W = W + 2;
+                                if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                                {
+                                    // if horizontal
+                                    if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                    {
+                                        W = W + 2;
+                                    }
+                                    else
+                                    {
+                                        W = W - 2;
+                                    }
+                                }
+                            }
+                        }
+
+                    if (row == 0 && col == 0)
+                    {
+                        S = S + 2;
+                        E = E + 2;
+                    }
+                    else if (row == 0 && col == colMax)
+                    {
+                        E++;
+                        // W
+                        if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                        {
+                            W = W + 2;
+                            if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                            {
+                                // if horizontal
+                                if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                {
+                                    W = W + 2;
+                                }
+                                else
+                                {
+                                    W = W - 2;
+                                }
+                            }
+                        }
+
+                        // S
+                        if (!(levelMap[row + 1, col] == 5 || levelMap[row + 1, col] == 6 || levelMap[row + 1, col] == 0))
+                        {
+                            //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            S = S + 2;
+                            if (levelMap[row + 1, col] == 2 || levelMap[row + 1, col] == 4)
+                            {
+                                // if vertical
+                                if (level[row + 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                {
+                                    S = S + 2;
+                                }
+                                else
+                                {
+                                    S = S - 2;
+                                }
+                            }
+                        }
+
+                    }
+                    else if (row == rowMax && col == 0)
+                    {
+                        S++;
+                        // E
+                        if (!(levelMap[row, col + 1] == 5 || levelMap[row, col + 1] == 6 || levelMap[row, col + 1] == 0))
+                        {
+                            E = E + 2;
+                            if (levelMap[row, col + 1] == 2 || levelMap[row, col + 1] == 4)
+                            {
+                                // if horizontal
+                                if (level[row, col + 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                {
+                                    E = E + 2;
+                                }
+                                else
+                                {
+                                    E = E - 2;
+                                }
+                            }
+                        }
+
+                        // N
+                        if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                        {
+                            //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            N = N + 2;
+                            if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                            {
+                                // if vertical
+                                if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                {
+                                    N = N + 2;
+                                }
+                                else
+                                {
+                                    N = N - 2;
+                                }
+                            }
+                        }
+                    }
+                    else if (row == rowMax && col == colMax)
+                    {
+                        S++;
+                        E++;
+                        // W
+                        if (!(levelMap[row, col - 1] == 5 || levelMap[row, col - 1] == 6 || levelMap[row, col - 1] == 0))
+                        {
+                            W = W + 2;
+                            if (levelMap[row, col - 1] == 2 || levelMap[row, col - 1] == 4)
+                            {
+                                // if horizontal
+                                if (level[row, col - 1].transform.rotation == Quaternion.Euler(0, 0, 90))
+                                {
+                                    W = W + 2;
+                                }
+                                else
+                                {
+                                    W = W - 2;
+                                }
+                            }
+                        }
+
+                        // N
+                        if (!(levelMap[row - 1, col] == 5 || levelMap[row - 1, col] == 6 || levelMap[row - 1, col] == 0))
+                        {
+                            //sprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            N = N + 2;
+                            if (levelMap[row - 1, col] == 2 || levelMap[row - 1, col] == 4)
+                            {
+                                // if vertical
+                                if (level[row - 1, col].transform.rotation == Quaternion.Euler(0, 0, 0))
+                                {
+                                    N = N + 2;
+                                }
+                                else
+                                {
+                                    N = N - 2;
+                                }
+                            }
+                        }
+                    }
+
+                    if (N < S && N < E && N < W) // North is least
+                    {
+                        level[row, col].transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (S < E && S < W) // South is least
+                    {
+                        level[row, col].transform.rotation = Quaternion.Euler(0, 0, 180);
+                    }
+                    else if (E < W) // East is least
+                    {
+                        level[row, col].transform.rotation = Quaternion.Euler(0, 0, 270);
+                    }
+                    else // West is least
+                    {
+                        level[row, col].transform.rotation = Quaternion.Euler(0, 0, 90);
+                    }
+
+
+                    //}
+                    /*catch
+                    {
+                        Debug.Log("Row: " + row + " Col: " + col);
+                    }*/
                 }
-
-                
-
             }
-
-        
-            
         }
     }
 
     public void dupLevel()
     {
         Instantiate(lvlParent, new Vector3(30, 0, 0), Quaternion.Euler(0, 180, 0));
-        GameObject removedLastRow = lvlParent;
+        /*GameObject removedLastRow = lvlParent;
         foreach (Transform sprite in lvlParent.transform)
         {
             if (sprite.position.y == 0)
@@ -651,6 +1278,27 @@ public class LevelGenerator : MonoBehaviour
             }
         }
         Instantiate(removedLastRow, new Vector3(30, 0, 0), Quaternion.Euler(0, 0, 180));
-        Instantiate(removedLastRow, new Vector3(0, 0, 0), Quaternion.Euler(180, 0, 0));
+        Instantiate(removedLastRow, new Vector3(0, 0, 0), Quaternion.Euler(180, 0, 0));*/
+
+        GameObject q4 = Instantiate(lvlParent, new Vector3(30, 0, 0), Quaternion.Euler(0, 0, 180));
+        foreach (Transform sprite in q4.transform)
+        {
+            //Debug.Log(sprite.name + sprite.position.y);
+            if (sprite.position.y > -15)
+            {
+                
+                Destroy(sprite.gameObject);
+            }
+        }
+        GameObject q3 = Instantiate(q4, new Vector3(0, 0, 0), Quaternion.Euler(180, 0, 0));
+        foreach (Transform sprite in q3.transform)
+        {
+            //Debug.Log(sprite.name + sprite.position.y);
+            if (sprite.position.y > -15)
+            {
+
+                Destroy(sprite.gameObject);
+            }
+        }
     }
 }
