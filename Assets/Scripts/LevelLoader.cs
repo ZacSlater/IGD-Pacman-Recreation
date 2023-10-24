@@ -19,10 +19,5 @@ public class LevelLoader : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
-
-    public void LoadStartScreen()
-    {
-        SceneManager.LoadScene(0);
-    }
 }
 
