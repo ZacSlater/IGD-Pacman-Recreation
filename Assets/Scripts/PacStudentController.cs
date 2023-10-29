@@ -10,9 +10,14 @@ public class PacStudentController : MonoBehaviour
     private bool isMoving;
     public Animator anim;
     int speed;
+    Vector2 startPos;
     public AudioSource step;
     public AudioSource eat;
+    public AudioSource bump;
+    public ParticleSystem wallBump;
     public ParticleSystem trail;
+    bool newBump;
+    int teleport = 0;
     /*int[,] levelMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
@@ -90,43 +95,48 @@ public class PacStudentController : MonoBehaviour
 
         if (!isMoving)
         {
-                if (IsWalkable(lastInput))
+
+            if (IsWalkable(lastInput))
+            {
+                isMoving = true;
+                currentInput = lastInput;
+                StartCoroutine("LerpToLocation");
+            }
+            else
+            {
+                if (IsWalkable(currentInput))
                 {
                     isMoving = true;
-                    currentInput = lastInput;
                     StartCoroutine("LerpToLocation");
                 }
-                else
-                {
-                    if (IsWalkable(currentInput))
-                    {
-                        isMoving = true;
-                        StartCoroutine("LerpToLocation");
-                    }
-                    else
-                    {
-                        /*anim.SetInteger("moveX", 0);
-                        anim.SetInteger("moveY", 0);*/
-                }
-                }
+            }
+
         }
 
-        if (speed == 0)
+        if (speed == 0 && lastInput != KeyCode.None)
         {
             anim.SetInteger("moveX", 0);
             anim.SetInteger("moveY", 0);
+
+            if (newBump)
+            {
+                newBump = false;
+                bump.Play();
+                wallBump.Play();
+            }
+
+        } else
+        {
+            newBump = true;
         }
 
     }
 
-
-
-
     IEnumerator LerpToLocation()
     {
         float startTime = Time.time;
-        float duration = 0.25f;
-        Vector2 startPos = gameObject.transform.position;
+        float duration = 0.15f;
+        startPos = gameObject.transform.position;
         Vector2 endPos = new Vector2();
 
         if (currentInput == KeyCode.W)
@@ -171,18 +181,27 @@ public class PacStudentController : MonoBehaviour
                 }
                 else if (levelMap[playerY, playerX] == 5 || levelMap[playerY, playerX] == 6)
                 {
-                    eat.Play(); 
+                    eat.Play();
+                    levelMap[playerY, playerX] = 0;
                 }
             }
-
             yield return new WaitForSeconds(0.01f);
         }
-        
-        gameObject.transform.position = endPos;
+        //gameObject.transform.position = endPos;
 
-
+        if (teleport == 1)
+        {
+            gameObject.transform.position = new Vector3(360, 0, 0);
+            playerX = 25;
+            playerY = 14;
+        } else if (teleport == 2)
+        {
+            gameObject.transform.position = new Vector3(-360, 0, 0);
+            playerX = 1;
+            playerY = 14;
+        }
+        teleport = 0;
         speed = 0;
-        
         isMoving = false;
     }
 
@@ -249,5 +268,23 @@ public class PacStudentController : MonoBehaviour
         //Debug.Log("playerX: " + playerX + " playerY: " + playerY + " val: " + val);
 
         return val == 0 || val == 5 || val == 6;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Pellet")
+        {
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.name == "LeftTeleporter")
+        {
+            teleport = 1;
+        }
+
+        if (collision.gameObject.name == "RightTeleporter")
+        {
+            teleport = 2;
+        }
     }
 }
