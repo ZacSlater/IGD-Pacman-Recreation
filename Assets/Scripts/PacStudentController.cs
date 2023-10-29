@@ -8,6 +8,11 @@ public class PacStudentController : MonoBehaviour
     private KeyCode currentInput;
     private int playerX, playerY;
     private bool isMoving;
+    public Animator anim;
+    int speed;
+    public AudioSource step;
+    public AudioSource eat;
+    public ParticleSystem trail;
     /*int[,] levelMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
@@ -45,7 +50,7 @@ public class PacStudentController : MonoBehaviour
         {2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0,0,0,0,4,0,0,0,5,0,0,0,0,0,0},
         {2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
-        {0,0,0,0,0,2,5,4,4,0,3,4,4,0,0,4,4,3,0,4,4,5,2,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,3,4,4,4,4,4,4,3,0,4,4,5,2,0,0,0,0,0},
         {0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0,0,0,4,4,5,2,0,0,0,0,0},
         {0,0,0,0,0,2,5,4,3,4,4,3,0,3,3,0,3,4,4,3,4,5,2,0,0,0,0,0},
         {1,2,2,2,2,1,5,4,3,4,4,3,0,4,4,0,3,4,4,3,4,5,1,2,2,2,2,1},
@@ -65,8 +70,6 @@ public class PacStudentController : MonoBehaviour
         playerX = 1;
         playerY = 1;
         isMoving = false;
-        Debug.Log(levelMap[1, 1]);
-        Debug.Log(levelMap[3, 1]);
     }
 
     private void Update()
@@ -102,10 +105,18 @@ public class PacStudentController : MonoBehaviour
                     }
                     else
                     {
-                        // stop animations
-                    }
+                        /*anim.SetInteger("moveX", 0);
+                        anim.SetInteger("moveY", 0);*/
+                }
                 }
         }
+
+        if (speed == 0)
+        {
+            anim.SetInteger("moveX", 0);
+            anim.SetInteger("moveY", 0);
+        }
+
     }
 
 
@@ -114,7 +125,7 @@ public class PacStudentController : MonoBehaviour
     IEnumerator LerpToLocation()
     {
         float startTime = Time.time;
-        float duration = 0.5f;
+        float duration = 0.25f;
         Vector2 startPos = gameObject.transform.position;
         Vector2 endPos = new Vector2();
 
@@ -122,41 +133,88 @@ public class PacStudentController : MonoBehaviour
         {
             endPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 30);
             playerY--;
-            // animation for direction
+            anim.SetInteger("moveX", 0);
+            anim.SetInteger("moveY", 1);
         } else if (currentInput == KeyCode.A)
         {
             endPos = new Vector2(gameObject.transform.position.x - 30, gameObject.transform.position.y);
             playerX--;
-            // animation for direction
+            anim.SetInteger("moveX", -1);
+            anim.SetInteger("moveY", 0);
         } else if (currentInput == KeyCode.S)
         {
             endPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 30);
             playerY++;
-            // animation for direciton
+            anim.SetInteger("moveX", 0);
+            anim.SetInteger("moveY", -1);
         } else if (currentInput == KeyCode.D)
         {
             endPos = new Vector2(gameObject.transform.position.x + 30, gameObject.transform.position.y);
             playerX++;
-            // animation for direction
+            anim.SetInteger("moveX", 1);
+            anim.SetInteger("moveY", 0);
         }
-
+        bool playedSound = false;
         while (Vector2.Distance(gameObject.transform.position, endPos) > 0)
         {
             float timeFrac = (Time.time - startTime) / duration;
             gameObject.transform.position = Vector2.Lerp(startPos, endPos, timeFrac);
-            //Debug.Log("in while loop");
+            speed = 1;
+
+            if (timeFrac > 0.5f && !playedSound)
+            {
+                playedSound = true;
+                trail.Play();
+                if (levelMap[playerY, playerX] == 0)
+                {
+                    step.Play();
+                }
+                else if (levelMap[playerY, playerX] == 5 || levelMap[playerY, playerX] == 6)
+                {
+                    eat.Play(); 
+                }
+            }
+
             yield return new WaitForSeconds(0.01f);
         }
         
         gameObject.transform.position = endPos;
 
-        // playsound
 
-        // play dust particle effect
-
-
-
+        speed = 0;
+        
         isMoving = false;
+    }
+
+    private int getLevelItem(KeyCode direction)
+    {
+        try
+        {
+            if (direction == KeyCode.W)
+            {
+                return levelMap[playerY - 1, playerX];
+            }
+
+            if (direction == KeyCode.A)
+            {
+                return levelMap[playerY, playerX - 1];
+            }
+
+            if (direction == KeyCode.S)
+            {
+                return levelMap[playerY + 1, playerX];
+            }
+
+            if (direction == KeyCode.D)
+            {
+                return levelMap[playerY, playerX + 1];
+            }
+        }
+        catch
+        {
+            
+        }
+        return -1;
     }
 
     private bool IsWalkable(KeyCode direction)
@@ -188,7 +246,7 @@ public class PacStudentController : MonoBehaviour
             // teleport player
         }
 
-        Debug.Log("playerX: " + playerX + " playerY: " + playerY + " val: " + val);
+        //Debug.Log("playerX: " + playerX + " playerY: " + playerY + " val: " + val);
 
         return val == 0 || val == 5 || val == 6;
     }
