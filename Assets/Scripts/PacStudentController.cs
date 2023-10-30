@@ -18,6 +18,8 @@ public class PacStudentController : MonoBehaviour
     public ParticleSystem trail;
     bool newBump;
     int teleport = 0;
+    ScoreManager scoreManager;
+    GhostManager ghostManager;
     /*int[,] levelMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
@@ -75,6 +77,8 @@ public class PacStudentController : MonoBehaviour
         playerX = 1;
         playerY = 1;
         isMoving = false;
+        scoreManager = GameObject.FindAnyObjectByType<ScoreManager>();
+        ghostManager = GameObject.FindAnyObjectByType<GhostManager>();
     }
 
     private void Update()
@@ -275,6 +279,20 @@ public class PacStudentController : MonoBehaviour
         if (collision.gameObject.tag == "Pellet")
         {
             Destroy(collision.gameObject);
+            scoreManager.increaseScore(10);
+        }
+
+        if (collision.gameObject.tag == "PowerPellet")
+        {
+            Destroy(collision.gameObject);
+            scoreManager.increaseScore(10);
+            ghostManager.powerPelletEaten();
+        }
+
+        if (collision.gameObject.tag == "Cherry")
+        {
+            Destroy(collision.gameObject);
+            scoreManager.increaseScore(100);
         }
 
         if (collision.gameObject.name == "LeftTeleporter")

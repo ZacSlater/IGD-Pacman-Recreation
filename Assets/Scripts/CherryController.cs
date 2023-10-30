@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CherryController : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject cherryPrefab;
     GameObject currentCherry;
     Vector2 endPos;

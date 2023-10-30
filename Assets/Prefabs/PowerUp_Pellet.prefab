@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4467973499395204906}
   m_Layer: 0
   m_Name: PowerUp_Pellet
-  m_TagString: Pellet
+  m_TagString: PowerPellet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

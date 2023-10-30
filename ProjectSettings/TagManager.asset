@@ -7,6 +7,8 @@ TagManager:
   - Wall
   - Pellet
   - Teleporter
+  - Cherry
+  - PowerPellet
   layers:
   - Default
   - TransparentFX
