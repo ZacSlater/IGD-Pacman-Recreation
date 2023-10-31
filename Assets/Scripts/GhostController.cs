@@ -13,6 +13,8 @@ public class GhostController : MonoBehaviour
     List<Position> nodes = new List<Position>();
     int currentNode;
     bool outsideSpawn = false;
+    float duration = 0.35f;
+    Position spawnPos;
 
     public class Position
     {
@@ -107,6 +109,7 @@ public class GhostController : MonoBehaviour
             ghostY = 15;
         }
         lastPos = new Position(ghostY, ghostX);
+        spawnPos = new Position(ghostY, ghostX);
 
         // for ghost 4
         currentNode = 0;
@@ -137,7 +140,7 @@ public class GhostController : MonoBehaviour
 
     public void Move()
     {
-        if (outsideSpawn)
+        if (outsideSpawn && !(state==State.Dead))
         {
             // get a list of valid options
             List<Position> validPositions = new List<Position>();
@@ -183,10 +186,8 @@ public class GhostController : MonoBehaviour
                     validPositions.Add(new Position(ghostY, ghostX - 1));
                 }
             }
-
-            // pick one of the valid options
-
-            if (ghostNum == 1)
+            
+            if (ghostNum == 1 || state == State.Scared || state == State.Recovering)
             {
                 int index = 0;
                 Position newPos = validPositions[0];
@@ -201,9 +202,7 @@ public class GhostController : MonoBehaviour
                 }
 
                 StartCoroutine("LerpToPosition", newPos);
-            }
-
-            if (ghostNum == 2)
+            } else if (ghostNum == 2)
             {
                 int index = 0;
                 Position newPos = validPositions[0];
@@ -218,16 +217,12 @@ public class GhostController : MonoBehaviour
                 }
 
                 StartCoroutine("LerpToPosition", newPos);
-            }
-
-            if (ghostNum == 3)
+            } else if (ghostNum == 3)
             {
                 int ran = Random.Range(0, validPositions.Count);
                 Position newPos = validPositions[ran];
                 StartCoroutine("LerpToPosition", newPos);
-            }
-
-            if (ghostNum == 4)
+            } else if (ghostNum == 4)
             {
                 int index = 0;
                 Position newPos = validPositions[0];
@@ -258,7 +253,7 @@ public class GhostController : MonoBehaviour
                 StartCoroutine("LerpToPosition", newPos);
             }
         }
-        else
+        else if (!outsideSpawn)
         {
             List<Position> validPositions = new List<Position>();
             if ((levelMap[ghostY - 1, ghostX] == 0 || levelMap[ghostY - 1, ghostX] == -1) && !lastPos.equals(ghostY - 1, ghostX))
@@ -302,12 +297,17 @@ public class GhostController : MonoBehaviour
 
             StartCoroutine("LerpToPosition", newPos);
         }
+        else if (state == State.Dead)
+        {
+            duration = 5;
+            outsideSpawn = false;
+            StartCoroutine("LerpToPosition", spawnPos);
+        }
     }
 
     IEnumerator LerpToPosition(Position pos)
     {
         float startTime = Time.time;
-        float duration = 0.35f;
         Vector3 startPos = gameObject.transform.position;
         Vector3 endPos = pos.GetTransform();
         //Debug.Log(lastPos + " || " + pos);
@@ -321,8 +321,8 @@ public class GhostController : MonoBehaviour
         lastPos = new Position(ghostY,ghostX);
         ghostX = pos.x;
         ghostY = pos.y;
-        
-         Move();
+        duration = 0.35f;
+        Move();
 
         
     }
