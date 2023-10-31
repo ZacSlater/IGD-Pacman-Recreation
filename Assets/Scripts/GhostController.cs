@@ -10,6 +10,9 @@ public class GhostController : MonoBehaviour
     int ghostX;
     int ghostY;
     Position lastPos;
+    List<Position> nodes = new List<Position>();
+    int currentNode;
+    bool outsideSpawn = false;
 
     public class Position
     {
@@ -53,9 +56,9 @@ public class GhostController : MonoBehaviour
         {1,2,2,2,2,1,0,4,3,4,4,3,0,4,4,0,3,4,4,3,4,0,1,2,2,2,2,1},
         {0,0,0,0,0,2,0,4,3,4,4,3,0,3,3,0,3,4,4,3,4,0,2,0,0,0,0,0},
         {0,0,0,0,0,2,0,4,4,0,0,0,0,0,0,0,0,0,0,4,4,0,2,0,0,0,0,0},
-        {0,0,0,0,0,2,0,4,4,0,3,4,4,0,0,4,4,3,0,4,4,0,2,0,0,0,0,0},
+        {0,0,0,0,0,2,0,4,4,0,3,4,4,-1,-1,4,4,3,0,4,4,0,2,0,0,0,0,0},
         {2,2,2,2,2,1,0,3,3,0,4,0,0,0,0,0,0,4,0,3,3,0,1,2,2,2,2,2},
-        {1,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,1},
+        {4,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,4},
         {2,2,2,2,2,1,0,3,3,0,4,0,0,0,0,0,0,4,0,3,3,0,1,2,2,2,2,2},
         {0,0,0,0,0,2,0,4,4,0,3,4,4,4,4,4,4,3,0,4,4,0,2,0,0,0,0,0},
         {0,0,0,0,0,2,0,4,4,0,0,0,0,0,0,0,0,0,0,4,4,0,2,0,0,0,0,0},
@@ -105,11 +108,36 @@ public class GhostController : MonoBehaviour
         }
         lastPos = new Position(ghostY, ghostX);
 
+        // for ghost 4
+        currentNode = 0;
+        nodes.Add(new Position(14, 6));
+        nodes.Add(new Position(20, 6));
+        nodes.Add(new Position(20, 1));
+        nodes.Add(new Position(27, 1));
+        nodes.Add(new Position(27, 12));
+        nodes.Add(new Position(23, 12));
+        nodes.Add(new Position(23, 15));
+        nodes.Add(new Position(27, 15));
+        nodes.Add(new Position(27, 26));
+        nodes.Add(new Position(20, 26));
+        nodes.Add(new Position(20, 21));
+        nodes.Add(new Position(14, 21));
+        nodes.Add(new Position(8, 21));
+        nodes.Add(new Position(8, 26));
+        nodes.Add(new Position(1, 26));
+        nodes.Add(new Position(1, 15));
+        nodes.Add(new Position(5, 15));
+        nodes.Add(new Position(5, 12));
+        nodes.Add(new Position(1, 12));
+        nodes.Add(new Position(1, 1));
+        nodes.Add(new Position(8, 1));
+        nodes.Add(new Position(8, 6));
+
     }
 
     public void Move()
     {
-        if (state == State.Walking)
+        if (outsideSpawn)
         {
             // get a list of valid options
             List<Position> validPositions = new List<Position>();
@@ -199,6 +227,80 @@ public class GhostController : MonoBehaviour
                 StartCoroutine("LerpToPosition", newPos);
             }
 
+            if (ghostNum == 4)
+            {
+                int index = 0;
+                Position newPos = validPositions[0];
+
+                //Debug.Log(nodes[currentNode]);
+
+                // is player at the current node
+                if (Vector3.Distance(nodes[currentNode].GetTransform(), gameObject.transform.position) == 0)
+                {
+                    if (currentNode < nodes.Count - 1)
+                    {
+                        currentNode++;
+                    } else
+                    {
+                        currentNode = 0;
+                    }
+                }
+
+                for (int i = 1; i < validPositions.Count; i++)
+                {
+                    if (Vector3.Distance(nodes[currentNode].GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(nodes[currentNode].GetTransform(), newPos.GetTransform()))
+                    {
+                        index = i;
+                        newPos = validPositions[index];
+                    }
+                }
+
+                StartCoroutine("LerpToPosition", newPos);
+            }
+        }
+        else
+        {
+            List<Position> validPositions = new List<Position>();
+            if ((levelMap[ghostY - 1, ghostX] == 0 || levelMap[ghostY - 1, ghostX] == -1) && !lastPos.equals(ghostY - 1, ghostX))
+            {
+                validPositions.Add(new Position(ghostY - 1, ghostX));
+            }
+
+            if ((levelMap[ghostY, ghostX + 1] == 0 || levelMap[ghostY, ghostX + 1] == -1) && !lastPos.equals(ghostY, ghostX + 1))
+            {
+                validPositions.Add(new Position(ghostY, ghostX + 1));
+            }
+
+            if ((levelMap[ghostY + 1, ghostX] == 0 || levelMap[ghostY + 1, ghostX] == -1) && !lastPos.equals(ghostY + 1, ghostX))
+            {
+                validPositions.Add(new Position(ghostY + 1, ghostX));
+            }
+
+            if ((levelMap[ghostY, ghostX - 1] == 0 || levelMap[ghostY, ghostX - 1] == -1) && !lastPos.equals(ghostY, ghostX - 1))
+            {
+                validPositions.Add(new Position(ghostY, ghostX - 1));
+            }
+
+            int index = 0;
+            Position newPos = validPositions[0];
+
+            if (Vector3.Distance(new Position(11, 13).GetTransform(), gameObject.transform.position) == 0)
+            {
+                outsideSpawn = true;
+                Move();
+                return;
+            }
+
+            for (int i = 1; i < validPositions.Count; i++)
+            {
+                if (Vector3.Distance(new Position(11,13).GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(new Position(11, 13).GetTransform(), newPos.GetTransform()))
+                {
+                    index = i;
+                    newPos = validPositions[index];
+                }
+            }
+
+            StartCoroutine("LerpToPosition", newPos);
         }
     }
 
@@ -208,7 +310,7 @@ public class GhostController : MonoBehaviour
         float duration = 0.35f;
         Vector3 startPos = gameObject.transform.position;
         Vector3 endPos = pos.GetTransform();
-        Debug.Log(lastPos + " || " + pos);
+        //Debug.Log(lastPos + " || " + pos);
 
         while (Vector2.Distance(gameObject.transform.position, endPos) > 0)
         {
@@ -220,10 +322,8 @@ public class GhostController : MonoBehaviour
         ghostX = pos.x;
         ghostY = pos.y;
         
-        if (state == State.Walking)
-        {
-            Move();
-        }
+         Move();
+
         
     }
 
