@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
 {
+    State state;
+    private enum State
+    {
+        Alive,
+        Dead
+    }
     private KeyCode lastInput;
     private KeyCode currentInput;
     private int playerX, playerY;
@@ -16,10 +22,13 @@ public class PacStudentController : MonoBehaviour
     public AudioSource bump;
     public ParticleSystem wallBump;
     public ParticleSystem trail;
+    public ParticleSystem deathEffect;
     bool newBump;
     int teleport = 0;
     ScoreManager scoreManager;
     GhostManager ghostManager;
+    int lives = 3;
+    public GameObject[] livesUI;
     /*int[,] levelMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
@@ -77,61 +86,69 @@ public class PacStudentController : MonoBehaviour
         playerX = 1;
         playerY = 1;
         isMoving = false;
+        state = State.Alive;
         scoreManager = GameObject.FindAnyObjectByType<ScoreManager>();
         ghostManager = GameObject.FindAnyObjectByType<GhostManager>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (GameObject.FindAnyObjectByType<GameManager>().state == GameManager.State.Ingame)
         {
-            lastInput = KeyCode.W;
-        } else if (Input.GetKeyDown(KeyCode.A))
-        {
-            lastInput = KeyCode.A;
-        } else if (Input.GetKeyDown(KeyCode.S))
-        {
-            lastInput = KeyCode.S;
-        } else if (Input.GetKeyDown(KeyCode.D))
-        {
-            lastInput = KeyCode.D;
-        }
-
-        if (!isMoving)
-        {
-
-            if (IsWalkable(lastInput))
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                isMoving = true;
-                currentInput = lastInput;
-                StartCoroutine("LerpToLocation");
+                lastInput = KeyCode.W;
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                lastInput = KeyCode.A;
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                lastInput = KeyCode.S;
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                lastInput = KeyCode.D;
+            }
+
+            if (!isMoving && state == State.Alive)
+            {
+
+                if (IsWalkable(lastInput))
+                {
+                    isMoving = true;
+                    currentInput = lastInput;
+                    StartCoroutine("LerpToLocation");
+                }
+                else
+                {
+                    if (IsWalkable(currentInput))
+                    {
+                        isMoving = true;
+                        StartCoroutine("LerpToLocation");
+                    }
+                }
+
+            }
+
+            if (speed == 0 && lastInput != KeyCode.None)
+            {
+                anim.SetInteger("moveX", 0);
+                anim.SetInteger("moveY", 0);
+
+                if (newBump)
+                {
+                    newBump = false;
+                    bump.Play();
+                    wallBump.Play();
+                }
+
             }
             else
             {
-                if (IsWalkable(currentInput))
-                {
-                    isMoving = true;
-                    StartCoroutine("LerpToLocation");
-                }
+                newBump = true;
             }
-
-        }
-
-        if (speed == 0 && lastInput != KeyCode.None)
-        {
-            anim.SetInteger("moveX", 0);
-            anim.SetInteger("moveY", 0);
-
-            if (newBump)
-            {
-                newBump = false;
-                bump.Play();
-                wallBump.Play();
-            }
-
-        } else
-        {
-            newBump = true;
         }
 
     }
@@ -139,7 +156,7 @@ public class PacStudentController : MonoBehaviour
     IEnumerator LerpToLocation()
     {
         float startTime = Time.time;
-        float duration = 0.15f;
+        float duration = 0.05f;
         startPos = gameObject.transform.position;
         Vector2 endPos = new Vector2();
 
@@ -276,33 +293,112 @@ public class PacStudentController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Pellet")
+        if (GameObject.FindAnyObjectByType<GameManager>().state == GameManager.State.Ingame)
         {
-            Destroy(collision.gameObject);
-            scoreManager.increaseScore(10);
-        }
 
-        if (collision.gameObject.tag == "PowerPellet")
-        {
-            Destroy(collision.gameObject);
-            scoreManager.increaseScore(10);
-            ghostManager.powerPelletEaten();
-        }
+            if (collision.gameObject.tag == "Pellet")
+            {
+                Destroy(collision.gameObject);
+                scoreManager.increaseScore(10);
+                StartCoroutine("CheckWin");
+            }
 
-        if (collision.gameObject.tag == "Cherry")
-        {
-            Destroy(collision.gameObject);
-            scoreManager.increaseScore(100);
-        }
+            if (collision.gameObject.tag == "PowerPellet")
+            {
+                Destroy(collision.gameObject);
+                scoreManager.increaseScore(10);
+                ghostManager.powerPelletEaten();
+                StartCoroutine("CheckWin");
+            }
 
-        if (collision.gameObject.name == "LeftTeleporter")
-        {
-            teleport = 1;
-        }
+            if (collision.gameObject.tag == "Cherry")
+            {
 
-        if (collision.gameObject.name == "RightTeleporter")
-        {
-            teleport = 2;
+                Destroy(collision.gameObject);
+                scoreManager.increaseScore(100);
+            }
+            GhostController ghostCon = null;
+            try
+            {
+                ghostCon = collision.gameObject.GetComponent<GhostController>();
+            }
+            catch
+            {
+
+            }
+
+            if (ghostCon != null)
+            {
+                // checkstate
+                if (ghostCon.state == GhostController.State.Walking)
+                {
+                    PlayerDeath();
+                }
+                else if (ghostCon.state == GhostController.State.Scared || ghostCon.state == GhostController.State.Recovering)
+                {
+                    ghostCon.KillGhost();
+                }
+            }
+
+            if (collision.gameObject.name == "LeftTeleporter")
+            {
+                teleport = 1;
+            }
+
+            if (collision.gameObject.name == "RightTeleporter")
+            {
+                teleport = 2;
+            }
         }
     }
+
+    public void PlayerDeath()
+    {
+        lives--;
+        for (int i = 0; i <= 3 - lives - 1; i++)
+        {
+            livesUI[i].SetActive(false);
+        }
+        state = State.Dead;
+        deathEffect.Play();
+        anim.Play("playerDeath");
+        if (lives >= 0)
+        {
+            StartCoroutine("SpawnLocation");
+        } else
+        {
+            GameObject.FindAnyObjectByType<GameManager>().GameOver();
+        }
+        
+    }
+
+    public IEnumerator CheckWin()
+    {
+        yield return new WaitForSeconds(0.1f);
+        GameObject pel = null;
+        GameObject powPel = null;
+        try
+        {
+            pel = GameObject.FindGameObjectWithTag("Pellet");
+            powPel = GameObject.FindGameObjectWithTag("PowerPellet");
+        }
+        finally
+        {
+            if (pel == null && powPel == null)
+            {
+                GameObject.FindAnyObjectByType<GameManager>().GameOver();
+            }
+        }
+    }
+
+    public IEnumerator SpawnLocation()
+    {
+        yield return new WaitForSeconds(0.75f);
+        transform.position = new Vector3(-360, 390, 0);
+        anim.Play("playerIdle");
+        state = State.Alive;
+        playerX = 1;
+        playerY = 1;
+    }
+
 }

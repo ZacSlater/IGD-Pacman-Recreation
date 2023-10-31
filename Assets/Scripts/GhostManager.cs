@@ -27,6 +27,7 @@ public class GhostManager : MonoBehaviour
         {
             Animator anim = ghost.GetComponent<Animator>();
             anim.SetBool("scared", true);
+            ghost.GetComponent<GhostController>().state = GhostController.State.Scared;
         }
 
         yield return new WaitForSeconds(7);
@@ -35,6 +36,7 @@ public class GhostManager : MonoBehaviour
         {
             Animator anim = ghost.GetComponent<Animator>();
             anim.SetBool("recovering", true);
+            ghost.GetComponent<GhostController>().state = GhostController.State.Recovering;
         }
 
         yield return new WaitForSeconds(3);

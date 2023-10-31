@@ -12,14 +12,13 @@ public class AudioController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levelLoad.Play();
         currentMusic = ghostAlive;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!levelLoad.isPlaying && !currentMusic.isPlaying)
+        if (!currentMusic.isPlaying && GameObject.FindAnyObjectByType<GameManager>().state == GameManager.State.Ingame)
         {
             currentMusic.Play();
         }
