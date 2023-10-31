@@ -54,11 +54,18 @@ public class GameManager : MonoBehaviour
 
         if (currentScore >= PlayerPrefs.GetInt("score"))
         {
-            PlayerPrefs.SetInt("score", currentScore);
-            if (time < PlayerPrefs.GetInt("time"))
+            if (currentScore == PlayerPrefs.GetInt("score"))
+            {
+                if (time < PlayerPrefs.GetInt("time"))
+                {
+                    PlayerPrefs.SetInt("time", time);
+                }
+            } else
             {
                 PlayerPrefs.SetInt("time", time);
             }
+            PlayerPrefs.SetInt("score", currentScore);
+
             PlayerPrefs.Save();
         }
         

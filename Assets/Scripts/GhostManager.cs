@@ -16,12 +16,14 @@ public class GhostManager : MonoBehaviour
 
     public void powerPelletEaten()
     {
-        StartCoroutine("scaredGhosts");
+        StopCoroutine("GhostTimer");
+        StartCoroutine("GhostTimer");
+        StopCoroutine("ScaredGhosts");
+        StartCoroutine("ScaredGhosts");
     }
 
-    IEnumerator scaredGhosts()
+    IEnumerator ScaredGhosts()
     {
-        StartCoroutine("GhostTimer");
         audioController.PowerUpMusic();
         foreach (GameObject ghost in ghosts)
         {
@@ -36,7 +38,10 @@ public class GhostManager : MonoBehaviour
         {
             Animator anim = ghost.GetComponent<Animator>();
             anim.SetBool("recovering", true);
-            ghost.GetComponent<GhostController>().state = GhostController.State.Recovering;
+            if (ghost.GetComponent<GhostController>().state == GhostController.State.Scared)
+            {
+                ghost.GetComponent<GhostController>().state = GhostController.State.Recovering;
+            }
         }
 
         yield return new WaitForSeconds(3);
@@ -46,6 +51,10 @@ public class GhostManager : MonoBehaviour
             Animator anim = ghost.GetComponent<Animator>();
             anim.SetBool("scared", false);
             anim.SetBool("recovering", false);
+            if (ghost.GetComponent<GhostController>().state == GhostController.State.Recovering)
+            {
+                ghost.GetComponent<GhostController>().state = GhostController.State.Walking;
+            }
         }
         audioController.GhostAliveMusic();
     }

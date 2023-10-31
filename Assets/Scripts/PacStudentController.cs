@@ -355,15 +355,15 @@ public class PacStudentController : MonoBehaviour
     public void PlayerDeath()
     {
         lives--;
-        for (int i = 0; i <= 3 - lives - 1; i++)
-        {
-            livesUI[i].SetActive(false);
-        }
-        state = State.Dead;
-        deathEffect.Play();
-        anim.Play("playerDeath");
         if (lives >= 0)
         {
+            for (int i = 0; i <= 3 - lives - 1; i++)
+            {
+                livesUI[i].SetActive(false);
+            }
+            state = State.Dead;
+            deathEffect.Play();
+            anim.Play("playerDeath");
             StartCoroutine("SpawnLocation");
         } else
         {
