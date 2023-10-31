@@ -12651,6 +12651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  ghostNum: 2
 --- !u!61 &521175069
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -24149,6 +24150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  ghostNum: 4
 --- !u!61 &602470371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -30925,6 +30927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  ghostNum: 3
 --- !u!61 &902349085
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -60269,6 +60272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  ghostNum: 1
 --- !u!61 &1892541832
 BoxCollider2D:
   m_ObjectHideFlags: 0

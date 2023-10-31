@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         GameObject.FindAnyObjectByType<CherryController>().GameStart();
         GameObject.FindAnyObjectByType<AudioController>().GhostAliveMusic();
         GameObject.FindAnyObjectByType<TimerManager>().StartTimer();
+        GameObject.FindAnyObjectByType<GhostManager>().GameStart();
 
     }
 

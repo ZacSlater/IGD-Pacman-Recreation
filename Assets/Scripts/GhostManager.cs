@@ -14,6 +14,14 @@ public class GhostManager : MonoBehaviour
         audioController = GameObject.FindAnyObjectByType<AudioController>();
     }
 
+    public void GameStart()
+    {
+        foreach (GameObject ghost in ghosts)
+        {
+            ghost.GetComponent<GhostController>().Move();
+        }
+    }
+
     public void powerPelletEaten()
     {
         StopCoroutine("GhostTimer");
