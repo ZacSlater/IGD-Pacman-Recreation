@@ -11,10 +11,12 @@ public class GhostController : MonoBehaviour
     int ghostY;
     Position lastPos;
     List<Position> nodes = new List<Position>();
+    List<Position> chokes = new List<Position>();
     int currentNode;
     bool outsideSpawn = false;
     float duration = 0.35f;
     Position spawnPos;
+    public bool enchancedMode;
 
     public class Position
     {
@@ -136,6 +138,11 @@ public class GhostController : MonoBehaviour
         nodes.Add(new Position(8, 1));
         nodes.Add(new Position(8, 6));
 
+        chokes.Add(new Position(5,6));
+        chokes.Add(new Position(5, 21));
+        chokes.Add(new Position(23, 6));
+        chokes.Add(new Position(23, 21));
+
     }
 
     public void Move()
@@ -186,72 +193,190 @@ public class GhostController : MonoBehaviour
                     validPositions.Add(new Position(ghostY, ghostX - 1));
                 }
             }
-            
-            if (ghostNum == 1 || state == State.Scared || state == State.Recovering)
-            {
-                int index = 0;
-                Position newPos = validPositions[0];
 
-                for (int i = 1; i < validPositions.Count; i++)
+
+            if (!enchancedMode)
+            {
+                if (ghostNum == 1 || state == State.Scared || state == State.Recovering)
                 {
-                    if (Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, validPositions[i].GetTransform()) >= Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, newPos.GetTransform()))
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    for (int i = 1; i < validPositions.Count; i++)
                     {
-                        index = i;
-                        newPos = validPositions[index];
+                        if (Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, validPositions[i].GetTransform()) >= Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
                     }
+
+                    StartCoroutine("LerpToPosition", newPos);
                 }
-
-                StartCoroutine("LerpToPosition", newPos);
-            } else if (ghostNum == 2)
-            {
-                int index = 0;
-                Position newPos = validPositions[0];
-
-                for (int i = 1; i < validPositions.Count; i++)
+                else if (ghostNum == 2)
                 {
-                    if (Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, validPositions[i].GetTransform()) <= Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, newPos.GetTransform()))
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    for (int i = 1; i < validPositions.Count; i++)
                     {
-                        index = i;
-                        newPos = validPositions[index];
+                        if (Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, validPositions[i].GetTransform()) <= Vector3.Distance(FindAnyObjectByType<PacStudentController>().transform.position, newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
                     }
+
+                    StartCoroutine("LerpToPosition", newPos);
                 }
-
-                StartCoroutine("LerpToPosition", newPos);
-            } else if (ghostNum == 3)
-            {
-                int ran = Random.Range(0, validPositions.Count);
-                Position newPos = validPositions[ran];
-                StartCoroutine("LerpToPosition", newPos);
-            } else if (ghostNum == 4)
-            {
-                int index = 0;
-                Position newPos = validPositions[0];
-
-                //Debug.Log(nodes[currentNode]);
-
-                // is player at the current node
-                if (Vector3.Distance(nodes[currentNode].GetTransform(), gameObject.transform.position) == 0)
+                else if (ghostNum == 3)
                 {
-                    if (currentNode < nodes.Count - 1)
+                    int ran = Random.Range(0, validPositions.Count);
+                    Position newPos = validPositions[ran];
+                    StartCoroutine("LerpToPosition", newPos);
+                }
+                else if (ghostNum == 4)
+                {
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    if (Vector3.Distance(nodes[currentNode].GetTransform(), gameObject.transform.position) == 0)
                     {
-                        currentNode++;
+                        if (currentNode < nodes.Count - 1)
+                        {
+                            currentNode++;
+                        }
+                        else
+                        {
+                            currentNode = 0;
+                        }
+                    }
+
+                    for (int i = 1; i < validPositions.Count; i++)
+                    {
+                        if (Vector3.Distance(nodes[currentNode].GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(nodes[currentNode].GetTransform(), newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
+                    }
+
+                    StartCoroutine("LerpToPosition", newPos);
+                } 
+            }
+            else if (enchancedMode)
+            {
+                GameObject player = FindAnyObjectByType<PacStudentController>().gameObject;
+                KeyCode playerDir = player.GetComponent<PacStudentController>().getLastInput();
+                if (state == State.Scared || state == State.Recovering) // scatter
+                {
+                    
+                }
+                else if (ghostNum == 1) // attacker, straight for the player
+                {
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    for (int i = 1; i < validPositions.Count; i++)
+                    {
+                        if (Vector3.Distance(player.transform.position, validPositions[i].GetTransform()) <= Vector3.Distance(player.transform.position, newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
+                    }
+
+                    StartCoroutine("LerpToPosition", newPos);
+                }
+                else if (ghostNum == 2) // "one (and a half) steps ahead"
+                {
+                    Vector3 infrontPlayer = new Vector3();
+                    if (playerDir == KeyCode.W)
+                    {
+                        infrontPlayer = new Vector3(player.transform.position.x, player.transform.position.y + 45, player.transform.position.z);
+                    }
+                    else if (playerDir == KeyCode.A)
+                    {
+                        infrontPlayer = new Vector3(player.transform.position.x - 45, player.transform.position.y, player.transform.position.z);
+                    }
+                    else if (playerDir == KeyCode.S)
+                    {
+                        infrontPlayer = new Vector3(player.transform.position.x, player.transform.position.y - 45, player.transform.position.z);
+                    }
+                    else if (playerDir == KeyCode.D)
+                    {
+                        infrontPlayer = new Vector3(player.transform.position.x + 45, player.transform.position.y, player.transform.position.z);
+                    }
+
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    for (int i = 1; i < validPositions.Count; i++)
+                    {
+                        if (Vector3.Distance(infrontPlayer, validPositions[i].GetTransform()) <= Vector3.Distance(infrontPlayer, newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
+                    }
+
+                    StartCoroutine("LerpToPosition", newPos);
+                }
+                else if (ghostNum == 3) // assist
+                {
+                    int quadrant = 0;
+                    if (player.transform.position.x >= 0 && player.transform.position.y >= 0)
+                    {
+                        quadrant = 1;
+                    }
+                    else if(player.transform.position.x <= 0 && player.transform.position.y >= 0)
+                    {
+                        quadrant = 2;
+                    }
+                    else if (player.transform.position.x <= 0 && player.transform.position.y <= 0)
+                    {
+                        quadrant = 3;
+                    }
+                    else if (player.transform.position.x >= 0 && player.transform.position.y <= 0)
+                    {
+                        quadrant = 4;
+                    }
+
+                    int index = 0;
+                    Position newPos = validPositions[0];
+
+                    if (Vector3.Distance(player.transform.position, transform.position) <= 4 * 30) // if close enough attack
+                    {
+                        for (int i = 1; i < validPositions.Count; i++)
+                        {
+                            if (Vector3.Distance(player.transform.position, validPositions[i].GetTransform()) <= Vector3.Distance(player.transform.position, newPos.GetTransform()))
+                            {
+                                index = i;
+                                newPos = validPositions[index];
+                            }
+                        }
                     } else
                     {
-                        currentNode = 0;
+                        for (int i = 1; i < validPositions.Count; i++)
+                        {
+                            if (Vector3.Distance(chokes[quadrant - 1].GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(chokes[quadrant - 1].GetTransform(), newPos.GetTransform()))
+                            {
+                                index = i;
+                                newPos = validPositions[index];
+                            }
+                        }
                     }
-                }
 
-                for (int i = 1; i < validPositions.Count; i++)
+                    StartCoroutine("LerpToPosition", newPos);
+
+                }
+                else if (ghostNum == 4) // patrol
                 {
-                    if (Vector3.Distance(nodes[currentNode].GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(nodes[currentNode].GetTransform(), newPos.GetTransform()))
-                    {
-                        index = i;
-                        newPos = validPositions[index];
-                    }
-                }
 
-                StartCoroutine("LerpToPosition", newPos);
+                }
             }
+
+
         }
         else if (!outsideSpawn)
         {

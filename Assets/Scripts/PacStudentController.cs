@@ -156,7 +156,7 @@ public class PacStudentController : MonoBehaviour
     IEnumerator LerpToLocation()
     {
         float startTime = Time.time;
-        float duration = 0.05f;
+        float duration = 0.15f;
         startPos = gameObject.transform.position;
         Vector2 endPos = new Vector2();
 
@@ -399,6 +399,11 @@ public class PacStudentController : MonoBehaviour
         state = State.Alive;
         playerX = 1;
         playerY = 1;
+    }
+
+    public KeyCode getLastInput()
+    {
+        return lastInput;
     }
 
 }
