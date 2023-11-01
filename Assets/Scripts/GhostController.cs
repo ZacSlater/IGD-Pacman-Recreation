@@ -255,6 +255,7 @@ public class GhostController : MonoBehaviour
         }
         else if (!outsideSpawn)
         {
+            state = FindAnyObjectByType<GhostManager>().globalState;
             List<Position> validPositions = new List<Position>();
             if ((levelMap[ghostY - 1, ghostX] == 0 || levelMap[ghostY - 1, ghostX] == -1) && !lastPos.equals(ghostY - 1, ghostX))
             {
@@ -334,16 +335,24 @@ public class GhostController : MonoBehaviour
         anim.SetBool("recovering", false);
         anim.SetBool("dead", true);
         GameObject.FindAnyObjectByType<ScoreManager>().increaseScore(300);
-        GameObject.FindAnyObjectByType<AudioController>().GhostDeadMusic();
+        if (!FindAnyObjectByType<AudioController>().IsGhostMusicOn())
+        {
+            GameObject.FindAnyObjectByType<AudioController>().GhostDeadMusic();
+        }
+            
+
         StartCoroutine("DeadTime");
     }
 
     public IEnumerator DeadTime()
     {
         yield return new WaitForSeconds(5);
-        GameObject.FindAnyObjectByType<AudioController>().GhostAliveMusic();
-        anim.SetBool("dead", false);
         state = State.Walking;
+        anim.SetBool("dead", false);
+        if (FindAnyObjectByType<GhostManager>().AllGhostsAlive())
+        {
+            GameObject.FindAnyObjectByType<AudioController>().GhostAliveMusic();
+        }  
     }    
 
 }

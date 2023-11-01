@@ -43,5 +43,9 @@ public class AudioController : MonoBehaviour
         currentMusic = ghostDead;
     }
 
+    public bool IsGhostMusicOn()
+    {
+        return currentMusic == ghostDead;
+    }
 
 }
