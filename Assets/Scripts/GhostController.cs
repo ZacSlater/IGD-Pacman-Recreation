@@ -15,6 +15,7 @@ public class GhostController : MonoBehaviour
     int currentNode;
     bool outsideSpawn = false;
     float duration = 0.35f;
+    float enhancedDuration = 0.2f;
     Position spawnPos;
     public bool enchancedMode;
 
@@ -267,10 +268,35 @@ public class GhostController : MonoBehaviour
             else if (enchancedMode)
             {
                 GameObject player = FindAnyObjectByType<PacStudentController>().gameObject;
-                KeyCode playerDir = player.GetComponent<PacStudentController>().getLastInput();
+                KeyCode playerDir = player.GetComponent<PacStudentController>().getCurrentInput();
                 if (state == State.Scared || state == State.Recovering) // scatter
                 {
-                    
+                    int index = 0;
+                    Position newPos = validPositions[0];
+                    int quadrant = 0;
+                    if (ghostNum == 1)
+                    {
+                        quadrant = 1;
+                    } else if (ghostNum == 2)
+                    {
+                        quadrant = 2;
+                    } else if (ghostNum == 3)
+                    {
+                        quadrant = 3;
+                    } else if (ghostNum == 4)
+                    {
+                        quadrant = 4;
+                    }
+
+                    for (int i = 1; i < validPositions.Count; i++)
+                    {
+                        if (Vector3.Distance(chokes[quadrant - 1].GetTransform(), validPositions[i].GetTransform()) <= Vector3.Distance(chokes[quadrant - 1].GetTransform(), newPos.GetTransform()))
+                        {
+                            index = i;
+                            newPos = validPositions[index];
+                        }
+                    }
+                    StartCoroutine("LerpToPosition", newPos);
                 }
                 else if (ghostNum == 1) // attacker, straight for the player
                 {
@@ -372,7 +398,45 @@ public class GhostController : MonoBehaviour
                 }
                 else if (ghostNum == 4) // patrol
                 {
+                    int index = 0;
+                    Position newPos = validPositions[0];
 
+
+                    if (Vector3.Distance(player.transform.position, transform.position) >= 8 * 30) // move toward player
+                    {
+                        for (int i = 1; i < validPositions.Count; i++)
+                        {
+                            if (Vector3.Distance(player.transform.position, validPositions[i].GetTransform()) <= Vector3.Distance(player.transform.position, newPos.GetTransform()))
+                            {
+                                index = i;
+                                newPos = validPositions[index];
+                            }
+                        }
+                    }
+                    else if (Vector3.Distance(player.transform.position, transform.position) <= 4 * 30) // attack player
+                    {
+                        for (int i = 1; i < validPositions.Count; i++)
+                        {
+                            if (Vector3.Distance(player.transform.position, validPositions[i].GetTransform()) >= Vector3.Distance(player.transform.position, newPos.GetTransform()))
+                            {
+                                index = i;
+                                newPos = validPositions[index];
+                            }
+                        }
+                    }
+                    else if (Vector3.Distance(player.transform.position, transform.position) <= 6 * 30) // stay a distance away from the ghost
+                    {
+                        for (int i = 1; i < validPositions.Count; i++)
+                        {
+                            if (Vector3.Distance(player.transform.position, validPositions[i].GetTransform()) >= Vector3.Distance(player.transform.position, newPos.GetTransform()))
+                            {
+                                index = i;
+                                newPos = validPositions[index];
+                            }
+                        }
+                    }
+
+                    StartCoroutine("LerpToPosition", newPos);
                 }
             }
 
@@ -436,7 +500,12 @@ public class GhostController : MonoBehaviour
         float startTime = Time.time;
         Vector3 startPos = gameObject.transform.position;
         Vector3 endPos = pos.GetTransform();
-        //Debug.Log(lastPos + " || " + pos);
+        
+
+        if (enchancedMode && !(state == State.Dead))
+        {
+            duration = enhancedDuration;
+        }
 
         while (Vector2.Distance(gameObject.transform.position, endPos) > 0)
         {

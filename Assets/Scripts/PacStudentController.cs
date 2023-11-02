@@ -354,6 +354,7 @@ public class PacStudentController : MonoBehaviour
 
     public void PlayerDeath()
     {
+        GetComponent<BoxCollider2D>().enabled = false;
         lives--;
         if (lives >= 0)
         {
@@ -399,11 +400,13 @@ public class PacStudentController : MonoBehaviour
         state = State.Alive;
         playerX = 1;
         playerY = 1;
+        yield return new WaitForSeconds(0.3f);
+        GetComponent<BoxCollider2D>().enabled = true;
     }
 
-    public KeyCode getLastInput()
+    public KeyCode getCurrentInput()
     {
-        return lastInput;
+        return currentInput;
     }
 
 }

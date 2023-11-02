@@ -12433,7 +12433,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 300
+  orthographic size: 420
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -12461,8 +12461,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1639000234}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &519822016
 PrefabInstance:
@@ -12636,7 +12636,7 @@ Transform:
   m_Children:
   - {fileID: 138661249}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &521175068
 MonoBehaviour:
@@ -12652,7 +12652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   ghostNum: 2
-  enchancedMode: 0
+  enchancedMode: 1
 --- !u!61 &521175069
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -24136,7 +24136,7 @@ Transform:
   m_Children:
   - {fileID: 344208128}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &602470370
 MonoBehaviour:
@@ -24152,7 +24152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   ghostNum: 4
-  enchancedMode: 0
+  enchancedMode: 1
 --- !u!61 &602470371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -27574,7 +27574,7 @@ Transform:
   - {fileID: 2139420586}
   - {fileID: 580471304}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &771216229
 PrefabInstance:
@@ -30914,7 +30914,7 @@ Transform:
   m_Children:
   - {fileID: 1481264458}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &902349084
 MonoBehaviour:
@@ -30930,7 +30930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   ghostNum: 3
-  enchancedMode: 0
+  enchancedMode: 1
 --- !u!61 &902349085
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -32982,7 +32982,7 @@ Transform:
   - {fileID: 719185123}
   - {fileID: 1558351750}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1000938735
 PrefabInstance:
@@ -33074,7 +33074,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1005673255
 PrefabInstance:
@@ -38255,7 +38255,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1224538966
 GameObject:
@@ -53916,9 +53916,8 @@ Transform:
   - {fileID: 528022269}
   - {fileID: 569555625}
   - {fileID: 1224538969}
-  - {fileID: 519420032}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1639000237
 MonoBehaviour:
@@ -56596,7 +56595,7 @@ RectTransform:
   - {fileID: 1836539541}
   - {fileID: 1032181970}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -60262,7 +60261,7 @@ Transform:
   m_Children:
   - {fileID: 1311730500}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1892541831
 MonoBehaviour:
@@ -60278,7 +60277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   ghostNum: 1
-  enchancedMode: 0
+  enchancedMode: 1
 --- !u!61 &1892541832
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -61802,7 +61801,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1961873424
 PrefabInstance:
